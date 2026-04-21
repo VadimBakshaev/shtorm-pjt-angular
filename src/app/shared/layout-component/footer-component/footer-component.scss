@@ -1,0 +1,50 @@
+@use 'global' as *;
+
+.footer{
+    padding-top: 40px;
+    padding-bottom: 54px;
+    background-color: #b9d5fd;
+}
+
+.footer-top{
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 40px;
+}
+
+.footer-bottom{
+    display: flex;
+    gap: 60px;
+}
+
+.footer-bottom-item{
+    max-width: 255px;
+    .btn{
+        margin-top: 10px;
+        font-size: 12px;
+    }
+}
+
+.footer-bottom-item-head{
+    font-weight: 500;
+    font-size: 16px;
+    color: $accent-color;
+    margin-bottom: 10px;
+}
+
+.footer-bottom-item-info{
+    color: $text-color;
+    line-height: 130%;
+}
+
+.footer-bottom-item-social{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-copiright{
+    margin-top: 6px;
+    color: $accent-color;
+}

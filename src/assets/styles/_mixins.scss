@@ -1,0 +1,9 @@
+@use 'variables'as *;
+
+@mixin head-lora($size) {
+    font-family: 'Lora', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: $size;
+    color: $accent-color;
+}

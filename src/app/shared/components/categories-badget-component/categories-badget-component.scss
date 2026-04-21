@@ -1,0 +1,10 @@
+@use 'global'as *;
+
+.category {
+    border-radius: 5px;
+    padding-block: 10px;
+    padding-inline: 18px;
+    background-color: white;
+    font-size: 11px;
+    color: $accent-color;
+}

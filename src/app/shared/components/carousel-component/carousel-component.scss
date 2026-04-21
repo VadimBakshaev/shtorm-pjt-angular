@@ -1,0 +1,85 @@
+@use 'global'as *;
+
+.banner-box {
+    position: relative;
+}
+
+.banner {
+    padding: 100px;
+    height: 500px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.banner-type {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: $accent-color;
+}
+
+.banner-title {
+    @include head-lora(50px);
+    line-height: 130%;
+    max-width: 550px;
+}
+
+::ng-deep .banner-title .accent {
+    color: #fff;
+}
+
+::ng-deep .banner-box .owl-carousel {
+    .owl-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;        
+        z-index: 3;
+    }
+
+    .owl-dot {
+        span {
+            border: 1px solid white;
+            background-color: transparent;
+        }
+    }
+
+    .owl-dot.active {
+        span {
+            border: 1px solid white;
+            background-color: white;
+        }
+    }
+}
+
+.banner-description {
+    font-size: 24px;
+    line-height: 130%;
+    color: #fff;
+    max-width: 495px;
+    margin-top: 20px;
+}
+
+.banner-btn {
+    margin-top: 50px;
+    width: 163px;
+}
+
+.prev-arrow {
+    position: absolute;
+    left: 10px;
+    top: calc(50% - 28px);
+    z-index: 3;
+    cursor: pointer;
+}
+
+.next-arrow {
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 28px);
+    z-index: 3;
+    cursor: pointer;
+}

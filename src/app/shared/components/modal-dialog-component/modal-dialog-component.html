@@ -1,0 +1,42 @@
+<div class="modal">
+    <div class="modal-close" (click)="dialogRef.close()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#BEBEBE" stroke-linecap="round" />
+            <line x1="13.9236" y1="2.62971" x2="1.90277" y2="14.6505" stroke="#BEBEBE" stroke-linecap="round" />
+        </svg>
+    </div>
+    @if (isRequestDone() && !isFailRequest()) {
+    <h2 class="modal-title">Спасибо за вашу заявку!</h2>
+    <p class="modal-text">Мы свяжемся с вами при первой же возможности.</p>
+    <button class="btn" (click)="dialogRef.close()">Окей</button>
+    } @else {
+    @if (data.type === 'order') {
+    <h2 class="modal-title">Заявка на услугу</h2>
+    } @else {
+    <h2 class="modal-title">Закажите бесплатную консультацию!</h2>
+    }
+    <form class="modal-form">
+        @if (data.type === 'order' && categories().length > 0) {
+        <select class="input form-select" id="modalCategory" [formField]="requestForm.service">
+            @for (category of categories(); track category.id) {
+            <option value="{{category.name}}">{{category.name}}</option>
+            }
+        </select>
+        }
+        <input class="input" type="text" placeholder="Ваше имя" [formField]="requestForm.name" [ngStyle]="{'border-color': requestForm.name().invalid() 
+            && (requestForm.name().touched() || requestForm.name().dirty()) ? 'red' : ''}">
+        @if (requestForm.name().touched() && requestForm.name().invalid()) {
+        <p class="form-error">{{requestForm.name().errors()[0].message}}</p>
+        }
+        <input class="input" type="phone" placeholder="Ваш номер телефона" [formField]="requestForm.phone" [ngStyle]="{'border-color': requestForm.phone().invalid()
+            && (requestForm.phone().touched() || requestForm.phone().dirty()) ? 'red' : ''}">
+        @if (requestForm.phone().touched() && requestForm.phone().invalid()) {
+        <p class="form-error">{{requestForm.phone().errors()[0].message}}</p>
+        }
+        <button class="btn form-btn" type="button" [disabled]="!requestForm().valid()"
+            (click)="sendRequest()">{{data.type === 'order' ? 'Оставить заявку' : 'Заказать консультацию'}}</button>
+        <p class="form-error" [ngStyle]="{'visibility': isFailRequest() ? 'visible' : 'hidden'}">Ошибка при отправке
+            формы. Попробуйте еще раз</p>
+    </form>
+    }
+</div>

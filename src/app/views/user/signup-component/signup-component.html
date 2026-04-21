@@ -1,0 +1,34 @@
+<section class="signup">
+    <div class="container">
+        <div class="signup-form">
+            <h2 class="signup-form-title">Регистрация на сайте</h2>
+            <form class="form">
+                <input class="input" type="text" placeholder="Ваше имя" [formField]="signupForm.name"
+                    [ngStyle]="{'border-color': signupForm.name().invalid() && (signupForm.name().touched() || signupForm.name().dirty()) ? 'red' : ''}">
+                @if (signupForm.name().touched() && signupForm.name().invalid()) {
+                <p class="form-error">{{signupForm.name().errors()[0].message}}</p>
+                }
+                <input class="input" type="text" placeholder="Электронная почта" [formField]="signupForm.email"
+                    [ngStyle]="{'border-color': signupForm.email().invalid() && (signupForm.email().touched() || signupForm.email().dirty()) ? 'red' : ''}">
+                @if (signupForm.email().touched() && signupForm.email().invalid()) {
+                <p class="form-error">{{signupForm.email().errors()[0].message}}</p>
+                }
+                <input class="input" type="text" placeholder="Пароль" [formField]="signupForm.password"
+                    [ngStyle]="{'border-color': signupForm.password().invalid() && (signupForm.password().touched() || signupForm.password().dirty()) ? 'red' : ''}">
+                @if (signupForm.password().touched() && signupForm.password().invalid()) {
+                <p class="form-error">{{signupForm.password().errors()[0].message}}</p>
+                }
+                <div class="form-confirm">
+                    <input type="checkbox" id="confirm" [formField]="signupForm.confirm">
+                    <label for="confirm">Я принимаю <a>условия пользовательского соглашения</a><br>
+                        и даю <a>согласие на обработку персональных данных</a>.</label>
+                </div>
+                <button class="btn form-btn" type="button" [disabled]="!signupForm().valid()" (click)="signup()">Зарегистрироваться</button>
+                <p class="form-to-login">Уже есть аккаунт? <a routerLink="/login">Войдите</a></p>
+            </form>
+        </div>
+        <div class="signup-img">
+            <img src="/assets/images/signup.jpg" alt="Signup page picture">
+        </div>
+    </div>
+</section>

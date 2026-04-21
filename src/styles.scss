@@ -1,1 +1,99 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material'as mat;
+@use 'global'as *;
+
+html {
+    height: 100%;
+    @include mat.theme((color: (primary: mat.$azure-palette,
+                tertiary: mat.$blue-palette,
+            ),
+            density: 0,
+        ));
+}
+
+// body {
+//   // Default the application to a light color theme. This can be changed to
+//   // `dark` to enable the dark color theme, or to `light dark` to defer to the
+//   // user's system settings.
+//   color-scheme: light;
+
+//   // Set a default background, font and text colors for the application using
+//   // Angular Material's system-level CSS variables. Learn more about these
+//   // variables at https://material.angular.dev/guide/system-variables
+//   background-color: var(--mat-sys-surface);
+//   color: var(--mat-sys-on-surface);
+//   font: var(--mat-sys-body-medium);
+
+//   // Reset the user agent margin.
+//   margin: 0;
+//   height: 100%;
+// }
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.container {
+    max-width: $container-width;
+    margin: 0 auto;
+}
+
+.menu {
+    ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+
+        a {
+            font-weight: 500;
+            color: $text-color;
+        }
+    }
+}
+
+.btn {
+    padding: 15px;
+    border-radius: 5px;
+    border: 0;
+    background-color: $accent-color;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:disabled {
+        background-color: rgb(171, 171, 171);
+        cursor: not-allowed;
+    }
+}
+
+.input {
+    border: 1px solid $accent-color;
+    border-radius: 3px;
+    padding: 17px;
+    outline: none;
+    color: $text-color;
+    box-sizing: border-box;
+    font-size: 16px;
+
+    &::placeholder {
+        font-size: 14px;
+        color: #a8aba7;
+    }
+}
+
+.form-error {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}

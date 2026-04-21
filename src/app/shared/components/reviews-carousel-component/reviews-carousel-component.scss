@@ -1,0 +1,53 @@
+@use 'global'as *;
+
+.reviews-box {
+    position: relative;
+}
+
+.review {
+    width: 396px;
+    height: 267px;
+    border: 1px solid $accent-color;
+    border-radius: 5px;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.review-reviewer {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin-bottom: 15px;
+}
+
+.reviewer-avatar {
+    background-position: center;
+    background-size: cover;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    font-size: 18px;
+    color: $accent-color;
+}
+
+.review-text {
+    color: $text-color;
+}
+
+.prev-arrow {
+    position: absolute;
+    top: calc(50% - 19px);
+    left: -25px;
+    cursor: pointer;
+}
+
+.next-arrow {
+    position: absolute;
+    top: calc(50% - 19px);
+    right: -25px;
+    cursor: pointer;
+}

@@ -1,0 +1,66 @@
+@use 'global'as *;
+
+.signup {
+    padding-top: 106px;
+    padding-bottom: 92px;
+
+    .container {
+        display: flex;
+        align-items: center;
+        gap: 178px;
+    }
+}
+
+.signup-form-title {
+    @include head-lora(36px);
+    margin-bottom: 40px;
+}
+
+.form {
+    width: 429px;
+
+    input:not([type='checkbox']) {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    input[type='checkbox'] {
+        margin-top: 3px;
+        cursor: pointer;
+    }
+
+    label {
+        font-size: 14px;
+        line-height: 130%;
+        color: $text-color;
+        cursor: pointer;
+
+        a {
+            color: $accent-color;
+            cursor: pointer;
+        }
+    }
+}
+
+.form-confirm {
+    display: flex;
+    align-items: start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.form-btn {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.form-to-login {
+    font-size: 14px;
+    color: #1e1a2b;
+
+    a {
+        color: $accent-color;
+        text-decoration: none;
+    }
+}

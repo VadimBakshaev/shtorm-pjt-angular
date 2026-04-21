@@ -1,0 +1,83 @@
+<section class="blog">
+    <div class="container">
+        <h2 class="blog-title">Блог</h2>
+        <div class="blog-filters">
+            <div class="blog-filters-applied">
+                @if(selectFilters().length > 0){
+                @for (filter of selectFilters(); track filter.name) {
+                @if (filter.select) {
+                <div class="blog-filters-applied-item">
+                    <span>{{filter.name}}</span>
+                    <svg (click)="setFilter({category: filter.url})" width="16" height="16" viewBox="0 0 16 16"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_22966_614)">
+                            <line x1="1.93553" y1="2.65002" x2="13.9563" y2="14.6708" stroke="#709FDC"
+                                stroke-linecap="round" />
+                            <line x1="13.9236" y1="2.62984" x2="1.90278" y2="14.6507" stroke="#709FDC"
+                                stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                }}}
+            </div>
+            <div class="blog-filters-select">
+                <div class="blog-filters-select-box" (click)="toggleOpen()" [class.open]="open()">
+                    <div class="blog-filters-select-head">
+                        <span>Фильтр</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 14C9.41668 14 8.83335 13.775 8.39168 13.3334L2.95835 7.90003C2.71668 7.65837 2.71668 7.25837 2.95835 7.0167C3.20002 6.77503 3.60002 6.77503 3.84168 7.0167L9.27502 12.45C9.67502 12.85 10.325 12.85 10.725 12.45L16.1583 7.0167C16.4 6.77503 16.8 6.77503 17.0417 7.0167C17.2833 7.25837 17.2833 7.65837 17.0417 7.90003L11.6083 13.3334C11.1667 13.775 10.5833 14 10 14Z"
+                                fill="#071739" />
+                        </svg>
+                    </div>
+                    <menu class="blog-filters-select-body">
+                        <ul>
+                            @if (selectFilters().length > 0) {
+                            @for (category of selectFilters(); track category.id) {
+                            <li class="select-option" [class.select]="category.select"
+                                (click)="setFilter({category: category.url})">
+                                <span>{{category.name}}</span>
+                                <span>{{category.select ? '-' : '+'}}</span>
+                            </li>
+                            }}
+                        </ul>
+                    </menu>
+                </div>
+            </div>
+        </div>
+        <div class="blog-articles">
+            @for (article of articles(); track $index) {
+            <div class="article">
+                <div class="article-img" style="background-image: url('{{serverPath + article.image}}');"></div>
+                <h5 class="article-title">{{article.title}}</h5>
+                <p class="article-description">{{article.description}}</p>
+                <a class="article-proceed" [routerLink]="['/article', article.url]">Читать дальше</a>
+                <categories-badget-component class="article-badget"
+                    [category]="article.category"></categories-badget-component>
+            </div>
+            }
+        </div>
+        @if (pages().length>1) {
+        <div class="blog-pagination">
+            <a class="pagination-arrow" (click)="openPrevPage()"
+                [class.disabled]="currentFilter.page ? currentFilter.page === 1 : true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19" fill="none">
+                    <path d="M8 3L2 9.5L8 16" stroke="#709fdc" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" fill="none" />
+                </svg>
+            </a>
+            @for (page of pages(); track $index) {
+            <a class="page" (click)="setFilter({page:page})"
+                [class.select]="currentFilter.page ? currentFilter.page === page : (page === 1)">{{page}}</a>
+            }
+            <a class="pagination-arrow" (click)="openNextPage()"
+                [class.disabled]="currentFilter.page ? currentFilter.page === pages().length : false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19" fill="none">
+                    <path d="M2 3L8 9.5L2 16" stroke="#709fdc" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" fill="none" />
+                </svg>
+            </a>
+        </div>
+        }
+    </div>
+</section>

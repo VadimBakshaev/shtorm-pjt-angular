@@ -1,0 +1,28 @@
+<section class="login">
+    <div class="container">
+        <div class="login-form">
+            <h2 class="login-form-title">Войти в личный кабинет</h2>
+            <form class="form">
+                <input class="input" type="email" placeholder="Электронная почта" [formField]="loginForm.email"
+                    [ngStyle]="{'border-color': loginForm.email().invalid() && (loginForm.email().touched() || loginForm.email().dirty()) ? 'red' : ''}">
+                @if (loginForm.email().touched() && loginForm.email().invalid()) {
+                <p class="form-error">{{loginForm.email().errors()[0].message}}</p>
+                }
+                <input class="input" type="text" placeholder="Пароль" [formField]="loginForm.password"
+                    [ngStyle]="{'border-color': loginForm.password().invalid() && (loginForm.password().touched() || loginForm.password().dirty()) ? 'red' : ''}">
+                @if (loginForm.password().touched() && loginForm.password().invalid()) {
+                <p class="form-error">{{loginForm.password().errors()[0].message}}</p>
+                }
+                <div class="form-remember-me">
+                    <input type="checkbox" id="rememberMe" [formField]="loginForm.rememberMe">
+                    <label for="rememberMe">Запомнить меня</label>
+                </div>
+                <button class="btn form-btn" type="button" [disabled]="!loginForm().valid()" (click)="login()">Войти</button>
+                <p class="form-to-signup">Нет аккаунта? <a routerLink="/signup">Пройдите регистрацию</a></p>
+            </form>
+        </div>
+        <div class="login-img">
+            <img src="/assets/images/login.jpg" alt="Login page picture">
+        </div>
+    </div>
+</section>

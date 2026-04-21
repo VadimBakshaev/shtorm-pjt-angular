@@ -1,0 +1,25 @@
+@use 'global'as *;
+
+.header {
+    padding-block: 40px;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.phone {
+    font-weight: 500;
+    color: $accent-color;
+    margin-left: 200px;
+}
+
+.header-user{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 500;
+    color: $text-color;
+}
