@@ -12,8 +12,8 @@ export class FooterComponent {
   private readonly dialog = inject(Dialog);
 
   protected openDialog() {
-      this.dialog.open(ModalDialogComponent, {
-        data: { type: 'consultation', service: '' }
-      })
-    }
+    this.dialog.open(ModalDialogComponent, {
+      data: { type: 'consultation', service: '' }
+    })
+  }
 }

@@ -86,7 +86,7 @@ export class ModalDialogComponent {
       params = {
         name: this.requestForm().value().name,
         phone: this.requestForm().value().phone,
-        type: this.data.type        
+        type: this.data.type
       };
     }
     this.requestService.request(params).pipe(
@@ -96,7 +96,7 @@ export class ModalDialogComponent {
         this.isFailRequest.set(data.error);
         this.isRequestDone.set(true);
       },
-      error: () =>{
+      error: () => {
         this.isFailRequest.set(true);
         this.isRequestDone.set(false);
       }

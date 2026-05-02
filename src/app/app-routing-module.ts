@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './shared/layout-component/layout-component';
 import { MainComponent } from './views/main-component/main-component';
 import { authForwardGuard } from './core/auth/auth-forward-guard';
@@ -15,8 +15,15 @@ const routes: Routes = [
   }
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',  
+  scrollOffset: [0, 60],       
+  onSameUrlNavigation: 'reload' 
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

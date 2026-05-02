@@ -1,0 +1,64 @@
+@use 'global'as *;
+
+.article-comment {
+    margin-bottom: 40px;
+}
+
+.article-comment-avatar {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin-bottom: 15px;
+}
+
+.article-comment-avatar-img {
+    width: 60px;
+    height: 60px;
+    background-position: center;
+    background-size: cover;
+}
+
+.article-comment-avatar-name {
+    font-weight: 600;
+    font-size: 18px;
+    color: $accent-color;
+    margin-bottom: 10px;
+}
+
+.article-comment-avatar-date {
+    font-weight: 600;
+    font-size: 14px;
+    color: #bebebe;
+}
+
+.article-comment-body {
+    font-size: 14px;
+    line-height: 140%;
+    color: $text-color;
+    margin-bottom: 40px;
+}
+
+.article-comment-active {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.active-like,
+.active-dislike,
+.active-complaint {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    &:hover,
+    &.select {
+        span {
+            color: $accent-color;
+        }
+
+        svg path {
+            stroke: $accent-color;
+        }
+    }
+}

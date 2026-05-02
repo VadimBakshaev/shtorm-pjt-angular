@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CommentRequestBodyType, CommentResponseType } from '../../../types/articles.type';
+import { CommentRequestBodyType, CommentResponseType, UserActionCommentType } from '../../../types/articles.type';
 import { DefaultResponseType } from '../../../types/default-response.type';
 
 @Injectable({
@@ -17,5 +17,17 @@ export class CommentsService {
 
   public addComment(body: CommentRequestBodyType): Observable<DefaultResponseType> {
     return this.http.post<DefaultResponseType>(environment.api + 'comments', body);
+  }
+
+  public addActionForComment(id: string, action: string): Observable<DefaultResponseType> {
+    return this.http.post<DefaultResponseType>(environment.api + 'comments/' + id + '/apply-action', { action });
+  }
+
+  public getActionsForArticle(articleId: string): Observable<UserActionCommentType[] | DefaultResponseType> {
+    return this.http.get<UserActionCommentType[] | DefaultResponseType>(environment.api + 'comments/article-comment-actions', { params: { articleId } });
+  }
+
+  public getActionForComment(id: string): Observable<UserActionCommentType | DefaultResponseType> {
+    return this.http.get<UserActionCommentType | DefaultResponseType>(environment.api + 'comments/' + id + '/actions');
   }
 }

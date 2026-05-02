@@ -15,8 +15,10 @@ export class HeaderComponent {
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected isLogged = toSignal(this.authService.isLogged$, { initialValue: false });
-  protected userName = toSignal(this.authService.userInfoState$, { initialValue: null });
+  // protected isLogged = toSignal(this.authService.isLogged$, { initialValue: false });
+  // protected userName = toSignal(this.authService.userInfoState$, { initialValue: null });
+  protected isLogged = this.authService.isLogged;
+  protected userName = this.authService.userInfoState;
 
   protected logout(): void {
     this.authService.logout().pipe(

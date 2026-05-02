@@ -13,17 +13,22 @@
                 @if (signupForm.email().touched() && signupForm.email().invalid()) {
                 <p class="form-error">{{signupForm.email().errors()[0].message}}</p>
                 }
-                <input class="input" type="text" placeholder="Пароль" [formField]="signupForm.password"
-                    [ngStyle]="{'border-color': signupForm.password().invalid() && (signupForm.password().touched() || signupForm.password().dirty()) ? 'red' : ''}">
+                <div class="input-password-box">
+                    <input class="input" type="text" [type]="hidePass() ? 'password' : 'text'" placeholder="Пароль"
+                        [formField]="signupForm.password"
+                        [ngStyle]="{'border-color': signupForm.password().invalid() && (signupForm.password().touched() || signupForm.password().dirty()) ? 'red' : ''}">
+                    <show-pass-component [(hide)]="hidePass"></show-pass-component>
+                </div>
                 @if (signupForm.password().touched() && signupForm.password().invalid()) {
                 <p class="form-error">{{signupForm.password().errors()[0].message}}</p>
                 }
                 <div class="form-confirm">
                     <input type="checkbox" id="confirm" [formField]="signupForm.confirm">
-                    <label for="confirm">Я принимаю <a>условия пользовательского соглашения</a><br>
-                        и даю <a>согласие на обработку персональных данных</a>.</label>
+                    <label for="confirm">Я принимаю <a (click)="openModal('privacy')">условия пользовательского соглашения</a><br>
+                        и даю <a (click)="openModal('agreed')">согласие на обработку персональных данных</a>.</label>
                 </div>
-                <button class="btn form-btn" type="button" [disabled]="!signupForm().valid()" (click)="signup()">Зарегистрироваться</button>
+                <button class="btn form-btn" type="button" [disabled]="!signupForm().valid()"
+                    (click)="signup()">Зарегистрироваться</button>
                 <p class="form-to-login">Уже есть аккаунт? <a routerLink="/login">Войдите</a></p>
             </form>
         </div>

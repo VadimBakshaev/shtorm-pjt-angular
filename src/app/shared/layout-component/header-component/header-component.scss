@@ -13,6 +13,7 @@
 .phone {
     font-weight: 500;
     color: $accent-color;
+    text-decoration: none;
     margin-left: 200px;
 }
 
@@ -22,4 +23,8 @@
     gap: 7px;
     font-weight: 500;
     color: $text-color;
+}
+
+.header-user-info{
+    cursor: pointer;
 }

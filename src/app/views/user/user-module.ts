@@ -5,6 +5,7 @@ import { UserRoutingModule } from './user-routing-module';
 import { LoginComponent } from './login-component/login-component';
 import { SignupComponent } from './signup-component/signup-component';
 import { FormField } from '@angular/forms/signals';
+import { SharedModule } from "../../shared/shared-module";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormField } from '@angular/forms/signals';
   imports: [
     CommonModule,
     FormField,
-    UserRoutingModule
-  ]
+    UserRoutingModule,
+    SharedModule
+]
 })
 export class UserModule { }

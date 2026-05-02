@@ -101,6 +101,12 @@
     margin-bottom: 40px;
 }
 
+.article-main-comments-nocomments {
+    font-size: 14px;
+    color: $text-color;
+    margin-bottom: 40px;
+}
+
 .article-main-comments-textarea {
     border: 1px solid $accent-color;
     border-radius: 3px;
@@ -117,74 +123,21 @@
     }
 }
 
+.article-main-comments-notlogged {
+    font-size: 14px;
+    color: $text-color;
+
+    a {
+        color: $accent-color;
+        text-decoration: none;
+    }
+}
+
 .article-comments-box {
     margin-top: 60px;
 }
 
-.article-comment {
-    margin-bottom: 40px;   
-}
-
-.article-comment-avatar {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    margin-bottom: 15px;
-}
-
-.article-comment-avatar-img {
-    width: 60px;
-    height: 60px;
-    background-position: center;
-    background-size: cover;
-}
-
-.article-comment-avatar-name {
-    font-weight: 600;
-    font-size: 18px;
-    color: $accent-color;
-    margin-bottom: 10px;
-}
-
-.article-comment-avatar-date {
-    font-weight: 600;
-    font-size: 14px;
-    color: #bebebe;
-}
-
-.article-comment-body {
-    font-size: 14px;
-    line-height: 140%;
-    color: $text-color;
-    margin-bottom: 40px;
-}
-
-.article-comment-active {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.active-like,
-.active-dislike,
-.active-complaint {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-
-    &:hover {
-        span {
-            color: $accent-color;
-        }
-
-        svg path {
-            stroke: $accent-color;
-        }
-    }
-}
-
 .article-comments-load {
-    display: flex;
     align-items: center;
     gap: 10px;
     color: $accent-color;
@@ -193,8 +146,39 @@
     margin-top: 60px;
     cursor: pointer;
     display: none;
-    &.show{
-        display: block;
+
+    &.show {
+        display: flex;
+    }
+}
+
+@keyframes loader {
+    0% {
+       transform: rotate(0deg);
+    }
+
+    25% {
+       transform: rotate(90deg);
+    }
+
+    50% {
+       transform: rotate(180deg);
+    }
+
+    75% {
+       transform: rotate(270deg);
+    }
+
+    100% {
+       transform: rotate(360deg);
+    }
+}
+
+.article-comments-loader {
+
+    img {
+        width: 60px;
+        animation: loader 1s linear infinite;
     }
 }
 

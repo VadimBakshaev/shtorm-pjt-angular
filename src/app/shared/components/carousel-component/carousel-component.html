@@ -6,7 +6,7 @@
                 <p class="banner-type">{{banner.type}}</p>
                 <h2 class="banner-title" [innerHTML]="banner.title"></h2>
                 <p class="banner-description">{{banner.description}}</p>
-                <button class="btn banner-btn">Подробнее</button>
+                <button class="btn banner-btn" (click)="openDialog(banner.url)">Подробнее</button>
             </div>
         </ng-template>
         }

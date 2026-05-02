@@ -31,6 +31,8 @@ export class LoginComponent {
     rememberMe: false
   });
 
+  protected hide = signal<boolean>(true);
+
   protected loginForm = form(this.loginModel, (schemaPath) => {
     required(schemaPath.email, { message: 'Заполните поле Email' });
     required(schemaPath.password, { message: 'Заполните поле пароля' });

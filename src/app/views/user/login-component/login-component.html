@@ -8,8 +8,12 @@
                 @if (loginForm.email().touched() && loginForm.email().invalid()) {
                 <p class="form-error">{{loginForm.email().errors()[0].message}}</p>
                 }
-                <input class="input" type="text" placeholder="Пароль" [formField]="loginForm.password"
-                    [ngStyle]="{'border-color': loginForm.password().invalid() && (loginForm.password().touched() || loginForm.password().dirty()) ? 'red' : ''}">
+                <div class="input-password-box">
+                    <input class="input input-password" [type]="hide() ? 'password' : 'text'" placeholder="Пароль"
+                        [formField]="loginForm.password"
+                        [ngStyle]="{'border-color': loginForm.password().invalid() && (loginForm.password().touched() || loginForm.password().dirty()) ? 'red' : ''}">                    
+                    <show-pass-component [(hide)]="hide"></show-pass-component>
+                </div>
                 @if (loginForm.password().touched() && loginForm.password().invalid()) {
                 <p class="form-error">{{loginForm.password().errors()[0].message}}</p>
                 }
@@ -17,7 +21,8 @@
                     <input type="checkbox" id="rememberMe" [formField]="loginForm.rememberMe">
                     <label for="rememberMe">Запомнить меня</label>
                 </div>
-                <button class="btn form-btn" type="button" [disabled]="!loginForm().valid()" (click)="login()">Войти</button>
+                <button class="btn form-btn" type="button" [disabled]="!loginForm().valid()"
+                    (click)="login()">Войти</button>
                 <p class="form-to-signup">Нет аккаунта? <a routerLink="/signup">Пройдите регистрацию</a></p>
             </form>
         </div>

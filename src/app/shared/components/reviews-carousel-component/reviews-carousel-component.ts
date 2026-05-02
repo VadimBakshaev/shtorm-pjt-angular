@@ -10,7 +10,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 export class ReviewsCarouselComponent {
   protected options: OwlOptions = {
     loop: true,
-    margin: 25,
+    margin: 24,
     mouseDrag: true,
     touchDrag: true,
     pullDrag: false,

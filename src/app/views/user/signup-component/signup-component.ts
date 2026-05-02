@@ -7,6 +7,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DetectResponseUtilite } from '../../../shared/utils/detect-response-utilite';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserInfoType } from '../../../../types/user-info.type';
+import { Dialog } from '@angular/cdk/dialog';
+import { ModalComponent } from '../../../shared/components/modal-component/modal-component';
 
 interface SignupType {
   name: string;
@@ -26,6 +28,7 @@ export class SignupComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly snackBar = inject(MatSnackBar);
   private readonly router = inject(Router);
+  private readonly modal = inject(Dialog);
 
   private signupModel = signal<SignupType>({
     name: '',
@@ -33,6 +36,8 @@ export class SignupComponent {
     password: '',
     confirm: false
   });
+
+  protected hidePass = signal<boolean>(true);
 
   protected signupForm = form(this.signupModel, (schemaPath) => {
     required(schemaPath.name, { message: 'Введите Ваше имя' });
@@ -64,7 +69,7 @@ export class SignupComponent {
         } else {
           this.authService.setTokens(data);
           this.snackBar.open('Вы успешно зарегистрировались');
-          this.setUser(data.userId);          
+          this.setUser(data.userId);
         }
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -85,5 +90,9 @@ export class SignupComponent {
     };
     this.authService.setUserInfo(user);
     this.router.navigate(['/']);
+  }
+
+  protected openModal(type: string) {
+    this.modal.open(ModalComponent, { data: { type } });
   }
 }

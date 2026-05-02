@@ -2,11 +2,17 @@ import { Component, computed, DestroyRef, effect, inject, Signal, signal } from 
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../shared/services/article-service';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { ArticleComentType, ArticleCoreType, ArticleType, CommentRequestBodyType, CommentResponseType } from '../../../../types/articles.type';
+import { ArticleComentType, ArticleCoreType, ArticleType, CommentRequestBodyType, CommentResponseType, CommentsWithAction, UserActionCommentType } from '../../../../types/articles.type';
 import { map, catchError, of, filter, switchMap, startWith, distinctUntilChanged } from 'rxjs';
 import { DetectResponseUtilite } from '../../../shared/utils/detect-response-utilite';
 import { environment } from '../../../../environments/environment';
 import { CommentsService } from '../../../shared/services/comments-service';
+import { AuthService } from '../../../core/auth/auth-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+// interface CommentWithAction extends ArticleComentType {
+//   action?: string;
+// }
 
 @Component({
   selector: 'article-component',
@@ -18,9 +24,10 @@ export class ArticleComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly articleService = inject(ArticleService);
   private readonly commentsService = inject(CommentsService);
+  private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly snackBar = inject(MatSnackBar);
 
-  private showCommentsCount: number = 3;
   private totalComments: number = 0;
   private routeParams = toSignal(
     this.activatedRoute.params.pipe(
@@ -30,9 +37,12 @@ export class ArticleComponent {
     { initialValue: this.activatedRoute.snapshot.params['url'] }
   );
 
+  protected isLogged = this.authService.isLogged;
+  protected userActions: UserActionCommentType[] = [];
+  protected isLoad = signal<boolean>(false);
   protected textCom = signal<string>('');
   protected serverPath: string = environment.serverStaticPath;
-  protected comments = signal<ArticleComentType[]>([]);
+  protected comments = signal<CommentsWithAction[]>([]);
   protected article = toSignal(
     toObservable(this.routeParams).pipe(
       switchMap(url =>
@@ -42,9 +52,10 @@ export class ArticleComponent {
               console.error(data.message);
               return {} as ArticleCoreType;
             } else {
-              console.log(data);
-              this.comments.set(data.comments);
+              //this.comments.set(data.comments);
               this.totalComments = data.commentsCount;
+              this.getActionUser(data.comments, data.id);
+              //this.setActionCurrentUser(data);
               return data;
             }
           }),
@@ -75,7 +86,7 @@ export class ArticleComponent {
 
   protected showProceed = computed(() => {
     const comments = this.comments();
-    return comments.length < this.article().commentsCount;
+    return comments.length < this.totalComments;
   });
 
   constructor() {
@@ -87,30 +98,11 @@ export class ArticleComponent {
   };
 
   protected getComments(isNew: boolean) {
-    // if (this.article().commentsCount - 3 < 0) {
-    //   skip = 0;
-    // } else if (skip<this.comments().length) {
-    //   skip=this.comments().length;
-    // }
+    if (!isNew) this.isLoad.set(true);
 
-    console.log('article comment count: ', this.article().commentsCount);
-    console.log('comments length: ', this.comments().length);
-
-    // if (this.article().commentsCount <= this.comments().length) {
-    //   isNew = true;
-    //   if (this.comments().length - 3 < 0) {
-    //     skip = 0
-    //   } else {
-    //     skip = this.comments().length
-    //   }
-    // }
     let offset: number;
     if (isNew || this.comments().length - 3 < 0) {
       offset = 0;
-      this.showCommentsCount = 3;
-    } else if(this.totalComments>this.showCommentsCount){
-      offset = (this.totalComments - this.showCommentsCount % 3) + this.showCommentsCount;
-      this.showCommentsCount += offset;
     } else {
       offset = this.comments().length;
     }
@@ -123,25 +115,55 @@ export class ArticleComponent {
           console.error(data.message)
         } else {
           if (isNew) {
-            this.comments.set(data.comments);
+            this.getActionUser(data.comments);
           } else {
-            this.comments.update(current => ([...current, ...data.comments]));
+            this.getActionUser([...this.comments(), ...data.comments]);
+            this.isLoad.set(false);
           }
           this.totalComments = data.allCount;
-          console.log('this response comments: ', data);
         }
       },
-      error: () => console.log('error to load comment')
-    })
+      error: () => console.log('Fail to load comment')
+    });
 
   };
+
+  private getActionUser(data: ArticleComentType[], articleId?: string | undefined) {
+    if (this.isLogged()) {
+      this.commentsService.getActionsForArticle(
+        articleId
+          ? articleId
+          : this.article().id
+      ).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe(
+        actions => {
+          if (DetectResponseUtilite.isErrorResponse(actions)) {
+            console.error(actions.message)
+          } else {
+            this.userActions = actions;
+            const comments: CommentsWithAction[] = data.map(comment => {
+              const found = this.userActions.find(com => com.comment === comment.id);
+              (comment as CommentsWithAction).action = found ? found.action : '';
+              return comment as CommentsWithAction;
+            });
+            this.comments.set(comments);
+            console.log('comment for user: ', comments);
+          }
+        }
+      );
+    } else {
+      this.comments.set(data);
+    }
+  };
+
+
 
   protected onInput(event: Event) {
     if (event.target instanceof HTMLTextAreaElement) this.textCom.set(event.target.value);
   };
 
   protected addComment() {
-    console.log(this.textCom());
     const body: CommentRequestBodyType = {
       text: this.textCom(),
       article: this.article().id
@@ -151,10 +173,21 @@ export class ArticleComponent {
     ).subscribe({
       next: data => {
         this.getComments(true);
+        this.textCom.set('');
         console.log('ответ на отправку коммента: ', data.message);
       },
       error: () => console.error('error to add comment')
     });
+  };
+
+  protected updateAction(upd: UserActionCommentType) {
+    this.comments.update(comments =>
+      comments.map(comment =>
+        comment.id === upd.comment
+          ? { ...comment, action: upd.action }
+          : comment
+      )
+    );
   };
 
 }

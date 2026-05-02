@@ -150,7 +150,7 @@
     flex-direction: column;
 }
 
-.article-item-badget{
+.article-item-badget {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -205,7 +205,7 @@
 .main-contacts {
     margin-bottom: 120px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);    
+    grid-template-columns: repeat(2, 1fr);
     gap: 26px;
 }
 
@@ -229,8 +229,23 @@
     margin-bottom: 20px;
 }
 
+a.main-contacts-info-text {
+    display: block;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .main-contacts-info-social {
     display: flex;
     align-items: center;
     gap: 20px;
+
+    a:hover {
+        path {
+            fill: $accent-color;
+        }
+    }
 }

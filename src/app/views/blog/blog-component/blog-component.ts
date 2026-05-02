@@ -135,10 +135,11 @@ export class BlogComponent {
   protected openNextPage(): void {
     if (this.currentFilter.page && this.currentFilter.page < this.pages().length) {
       this.currentFilter.page++;
-      this.articlesFilterService.setFilter(this.currentFilter);
     } else if (!this.currentFilter.page && this.pages().length > 1) {
       this.currentFilter.page = 2;
-      this.articlesFilterService.setFilter(this.currentFilter);
+    } else {
+      return;
     }
+    this.articlesFilterService.setFilter(this.currentFilter);
   }
 }

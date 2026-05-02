@@ -56,6 +56,13 @@ body {
         a {
             font-weight: 500;
             color: $text-color;
+            text-decoration: none;
+            cursor: pointer;
+
+            &:hover,
+            &.select {
+                color: $accent-color;
+            }
         }
     }
 }

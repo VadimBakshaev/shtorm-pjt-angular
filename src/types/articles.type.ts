@@ -32,6 +32,10 @@ export type ArticleComentType = {
     }
 }
 
+export type CommentsWithAction = ArticleComentType & {
+    action?: string;
+}
+
 export type CommentResponseType = {
     allCount: number;
     comments: ArticleComentType[];
@@ -40,4 +44,9 @@ export type CommentResponseType = {
 export type CommentRequestBodyType = {
     text: string;
     article: string;
+}
+
+export type UserActionCommentType = {
+    comment: string;
+    action: string;
 }

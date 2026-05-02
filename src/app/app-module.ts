@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth-interceptor';
 import { DialogModule } from '@angular/cdk/dialog';
+import { provideRouter, ROUTES, withInMemoryScrolling } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { DialogModule } from '@angular/cdk/dialog';
     provideBrowserGlobalErrorListeners(),
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 500}},
     provideHttpClient(withInterceptorsFromDi()), 
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }    
   ],
   bootstrap: [App]
 })

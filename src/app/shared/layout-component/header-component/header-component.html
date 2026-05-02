@@ -5,14 +5,18 @@
         </div>
         <menu class="menu">
             <ul>
-                <li><a>Услуги</a></li>
-                <li><a>О нас</a></li>
-                <li><a>Статьи</a></li>
-                <li><a>Отзывы</a></li>
-                <li><a>Контакты</a></li>
+                <li><a [routerLink]="['/']" fragment="services" [queryParams]="{ section: 'services' }"
+                        routerLinkActive="select">Услуги</a></li>
+                <li><a [routerLink]="['/']" fragment="about" [queryParams]="{ section: 'about' }"
+                        routerLinkActive="select">О нас</a></li>
+                <li><a routerLink="/blog" routerLinkActive="select">Статьи</a></li>
+                <li><a [routerLink]="['/']" fragment="reviews" [queryParams]="{ section: 'reviews' }"
+                        routerLinkActive="select">Отзывы</a></li>
+                <li><a [routerLink]="['/']" fragment="contacts" [queryParams]="{ section: 'contacts' }"
+                        routerLinkActive="select">Контакты</a></li>
             </ul>
         </menu>
-        <div class="phone">+7 (499) 343-13-34</div>
+        <a class="phone" href="tel:+74993431334">+7 (499) 343-13-34</a>
         <div class="header-user">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

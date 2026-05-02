@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Dialog } from '@angular/cdk/dialog';
+import { Component, inject } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { ModalDialogComponent } from '../modal-dialog-component/modal-dialog-component';
 
 @Component({
   selector: 'banner-carousel-component',
@@ -8,6 +10,8 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrl: './carousel-component.scss',
 })
 export class BannerCarouselComponent {
+  private readonly dialog = inject(Dialog);
+
   protected options: OwlOptions = {
     loop: true,
     mouseDrag: true,
@@ -17,7 +21,7 @@ export class BannerCarouselComponent {
     navSpeed: 700,
     navText: ['', ''],
     items: 1,
-    nav: false,    
+    nav: false,
   }
 
   protected banners = [
@@ -26,21 +30,30 @@ export class BannerCarouselComponent {
       img: 'banner1.jpg',
       type: 'Предложение месяца',
       title: '<span class="accent">Продвижение в Instagram для вашего бизнеса</span> -15%<span class="accent">!</span>',
-      description: ''
+      description: '',
+      url: 'target'
     },
     {
       id: 'banner 2',
       img: 'banner2.jpg',
       type: 'Акция',
       title: '<span class="accent">Нужен грамотный</span> копирайтер<span class="accent">?</span>',
-      description: 'Весь декабрь у нас действует акция на работу копирайтера.'
+      description: 'Весь декабрь у нас действует акция на работу копирайтера.',
+      url: 'kopiraiting'
     },
     {
       id: 'banner 3',
       img: 'banner3.jpg',
       type: 'Новость дня',
       title: '6 место <span class="accent">в ТОП-10 SMM-агенств Москвы!</span>',
-      description: 'Мы благодарим каждого, кто голосовал за нас!'
+      description: 'Мы благодарим каждого, кто голосовал за нас!',
+      url: 'smm'
     },
   ]
+
+  protected openDialog(url: string) {
+    this.dialog.open(ModalDialogComponent, {
+      data: { type: 'order', service: url }
+    })
+  }
 }

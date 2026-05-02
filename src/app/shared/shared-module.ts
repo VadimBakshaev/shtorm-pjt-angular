@@ -6,6 +6,9 @@ import { ReviewsCarouselComponent } from './components/reviews-carousel-componen
 import { CategoriesBadgetComponent } from './components/categories-badget-component/categories-badget-component';
 import { ModalDialogComponent } from './components/modal-dialog-component/modal-dialog-component';
 import { FormField } from "@angular/forms/signals";
+import { CommentComponent } from './components/comment-component/comment-component';
+import { ShowPassComponent } from './components/show-pass-component/show-pass-component';
+import { ModalComponent } from './components/modal-component/modal-component';
 
 
 @NgModule({
@@ -13,7 +16,10 @@ import { FormField } from "@angular/forms/signals";
     BannerCarouselComponent,
     ReviewsCarouselComponent,
     CategoriesBadgetComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    CommentComponent,
+    ShowPassComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +30,9 @@ import { FormField } from "@angular/forms/signals";
     BannerCarouselComponent,
     ReviewsCarouselComponent,
     CategoriesBadgetComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    CommentComponent,
+    ShowPassComponent
   ]
 })
 export class SharedModule { }

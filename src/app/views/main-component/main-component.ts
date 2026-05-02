@@ -42,7 +42,7 @@ export class MainComponent {
       title: 'Создание сайтов',
       description: 'В краткие сроки мы создадим качественный и самое главное продающий сайт для продвижения Вашего бизнеса!',
       price: '7 500₽',
-      url: 'dizain'
+      url: 'frilans'
     },
     {
       id: 'service2',
