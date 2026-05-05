@@ -11,7 +11,7 @@ import { ModalDialogComponent } from '../../components/modal-dialog-component/mo
 export class FooterComponent {
   private readonly dialog = inject(Dialog);
 
-  protected openDialog() {
+  protected openDialog(): void {
     this.dialog.open(ModalDialogComponent, {
       data: { type: 'consultation', service: '' }
     })

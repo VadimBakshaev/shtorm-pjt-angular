@@ -41,7 +41,7 @@ import { Component, model } from '@angular/core';
 export class ShowPassComponent {
   public hide = model(true);
 
-  protected hidePass() {
+  protected hidePass(): void {
     this.hide.set(!this.hide());
   }
 }

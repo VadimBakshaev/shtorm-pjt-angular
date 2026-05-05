@@ -1,6 +1,6 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth-service';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 
@@ -15,8 +15,6 @@ export class HeaderComponent {
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
-  // protected isLogged = toSignal(this.authService.isLogged$, { initialValue: false });
-  // protected userName = toSignal(this.authService.userInfoState$, { initialValue: null });
   protected isLogged = this.authService.isLogged;
   protected userName = this.authService.userInfoState;
 

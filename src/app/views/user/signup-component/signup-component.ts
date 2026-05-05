@@ -52,7 +52,7 @@ export class SignupComponent {
     required(schemaPath.confirm);
   });
 
-  protected signup() {
+  protected signup(): void {
     console.log(this.signupForm().value());
     if (!this.signupForm().valid()) return;
     this.authService.signup(
@@ -82,7 +82,7 @@ export class SignupComponent {
     });
   }
 
-  private setUser(id: string) {
+  private setUser(id: string): void {
     const user: UserInfoType = {
       id,
       name: this.signupForm().value().name,
@@ -92,7 +92,7 @@ export class SignupComponent {
     this.router.navigate(['/']);
   }
 
-  protected openModal(type: string) {
+  protected openModal(type: string): void {
     this.modal.open(ModalComponent, { data: { type } });
   }
 }

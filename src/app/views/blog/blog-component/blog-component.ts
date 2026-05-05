@@ -1,6 +1,6 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { ArticleService } from '../../../shared/services/article-service';
-import { ArticleType, BlogResponseType } from '../../../../types/articles.type';
+import { ArticleType } from '../../../../types/articles.type';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { DetectResponseUtilite } from '../../../shared/utils/detect-response-utilite';
 import { environment } from '../../../../environments/environment';
@@ -10,10 +10,6 @@ import { CategoryType } from '../../../../types/category.type';
 import { FilterParamType } from '../../../../types/filter-param.type';
 import { ArticlesFilterService } from '../../../shared/services/articles-filter-service';
 import { ActivatedRoute } from '@angular/router';
-
-interface CategoryWithSelectType extends CategoryType {
-  select: boolean;
-}
 
 @Component({
   selector: 'blog-component',
@@ -26,8 +22,9 @@ export class BlogComponent {
   private readonly articlesFilterService = inject(ArticlesFilterService);
   private readonly requestService = inject(RequestService);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
-  protected currentFilter: FilterParamType = {};
+  protected currentFilter = signal<FilterParamType>({});
 
   protected articles = signal<ArticleType[]>([]);
   protected pages = signal<number[]>([]);
@@ -61,28 +58,42 @@ export class BlogComponent {
   });
 
   constructor() {
-    effect(() => {
+    const effectRef = effect(() => {
       const filter = this.articlesFilterService.activeFilter();
       this.loadArticles(filter);
     });
 
-    this.currentFilter = { ...this.activatedRoute.snapshot.queryParams };
-    this.articlesFilterService.setFilter(this.currentFilter);
+    this.destroyRef.onDestroy(() => {
+      effectRef.destroy();
+    });
+
+    const initParam: FilterParamType = { ...this.activatedRoute.snapshot.queryParams };
+    if (initParam.page) initParam.page = +initParam.page;
+
+    this.currentFilter.set(initParam);
+    this.articlesFilterService.setFilter(initParam);
   }
 
-  private loadArticles(filter: FilterParamType) {
-    this.articleService.getBlog(filter).subscribe({
+  private loadArticles(filter: FilterParamType): void {
+    this.articleService.getBlog(filter).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (data) => {
         if (DetectResponseUtilite.isErrorResponse(data)) {
           console.error(data.message);
         } else {
-          console.log(data);
           this.articles.set(data.items);
           if (data.pages > 1) {
             this.pages.set(Array.from({ length: data.pages }, (_, i) => i + 1))
           } else {
             this.pages.set([]);
-            if (this.currentFilter.page) delete this.currentFilter['page'];
+            if (this.currentFilter().page) {
+              this.currentFilter.update(filter => {
+                const newFilter = { ...filter };
+                delete newFilter.page;
+                return newFilter;
+              });
+            };
           };
         };
       },
@@ -95,7 +106,7 @@ export class BlogComponent {
   }
 
   protected setFilter(param: { category?: string, page?: number }): void {
-    const newFilter: FilterParamType = { ...this.currentFilter };
+    const newFilter: FilterParamType = { ...this.currentFilter() };
 
     if (param.category) {
       const categoriesKey = 'categories[]';
@@ -120,26 +131,36 @@ export class BlogComponent {
       }
     };
 
-    this.currentFilter = newFilter;
-    this.articlesFilterService.setFilter(this.currentFilter);
+    this.currentFilter.set(newFilter);
+    this.articlesFilterService.setFilter(newFilter);
   }
 
   protected openPrevPage(): void {
-    if (this.currentFilter.page && this.currentFilter.page > 1) {
-      this.currentFilter.page--;
-      if (this.currentFilter.page === 1) delete this.currentFilter['page'];
-      this.articlesFilterService.setFilter(this.currentFilter);
+    const newFilter: FilterParamType = { ...this.currentFilter() };
+    const page = newFilter.page;
+
+    if (page && page > 1) {
+      newFilter.page = page - 1;
+      if (newFilter.page === 1) {
+        delete newFilter.page;
+      }
+      this.currentFilter.set(newFilter);
+      this.articlesFilterService.setFilter(newFilter);
     }
   }
 
   protected openNextPage(): void {
-    if (this.currentFilter.page && this.currentFilter.page < this.pages().length) {
-      this.currentFilter.page++;
-    } else if (!this.currentFilter.page && this.pages().length > 1) {
-      this.currentFilter.page = 2;
+    const newFilter: FilterParamType = { ...this.currentFilter() };
+
+    if (newFilter.page && newFilter.page < this.pages().length) {
+      newFilter.page += 1;
+    } else if (!newFilter.page && this.pages().length > 1) {
+      newFilter.page = 2;
     } else {
       return;
     }
-    this.articlesFilterService.setFilter(this.currentFilter);
+
+    this.currentFilter.set(newFilter);
+    this.articlesFilterService.setFilter(newFilter);
   }
 }

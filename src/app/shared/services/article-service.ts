@@ -10,7 +10,7 @@ import { FilterParamType } from '../../../types/filter-param.type';
   providedIn: 'root',
 })
 export class ArticleService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public getBestArticles(): Observable<DefaultResponseType | ArticleType[]> {
     return this.http.get<DefaultResponseType | ArticleType[]>(environment.api + 'articles/top');

@@ -52,9 +52,9 @@ export class ModalDialogComponent {
     service: ''
   });
 
-  protected requestForm = form(this.formModel, (schemaPatrh) => {
-    required(schemaPatrh.name, { message: 'Введите Ваше имя' });
-    required(schemaPatrh.phone, { message: 'Веедите номер телефона' });
+  protected requestForm = form(this.formModel, (schemaPath) => {
+    required(schemaPath.name, { message: 'Введите Ваше имя' });
+    required(schemaPath.phone, { message: 'Веедите номер телефона' });
   });
 
   constructor() {
@@ -70,10 +70,26 @@ export class ModalDialogComponent {
           }));
         }
       });
-  }
+  };
 
-  protected sendRequest() {
+  protected sendRequest(): void {
     if (!this.requestForm().valid()) return;
+
+    this.requestService.request(this.buildParamsRequest()).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: data => {
+        this.isFailRequest.set(data.error);
+        this.isRequestDone.set(true);
+      },
+      error: () => {
+        this.isFailRequest.set(true);
+        this.isRequestDone.set(false);
+      }
+    });
+  };
+
+  private buildParamsRequest(): OrderRequestParamsType | RequestParamsType {
     let params: OrderRequestParamsType | RequestParamsType;
     if (this.data.type === 'order') {
       params = {
@@ -88,18 +104,7 @@ export class ModalDialogComponent {
         phone: this.requestForm().value().phone,
         type: this.data.type
       };
-    }
-    this.requestService.request(params).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: data => {
-        this.isFailRequest.set(data.error);
-        this.isRequestDone.set(true);
-      },
-      error: () => {
-        this.isFailRequest.set(true);
-        this.isRequestDone.set(false);
-      }
-    })
-  }
+    };
+    return params;
+  };
 }

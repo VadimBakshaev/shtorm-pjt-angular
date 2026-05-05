@@ -10,7 +10,7 @@
     </div>
     <p class="article-comment-body">{{locComment().text}}</p>
     <div class="article-comment-active" (click)="setAction($event)">
-        <div class="active-like action" data-action="like" [class.select]="comment().action==='like'">
+        <div class="active-like action" data-action="like" [class.select]="locComment().action==='like'">
             <span class="active-like-count">{{locComment().likesCount}}</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

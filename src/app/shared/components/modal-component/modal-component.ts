@@ -11,5 +11,4 @@ import { ModalDataType } from '../../../../types/modal-data.type';
 export class ModalComponent {
   protected dialogRef = inject(DialogRef);
   protected data: ModalDataType = inject(DIALOG_DATA);
-
 }

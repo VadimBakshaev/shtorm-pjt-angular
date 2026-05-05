@@ -1,18 +1,13 @@
-import { Component, computed, DestroyRef, effect, inject, Signal, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../shared/services/article-service';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { ArticleComentType, ArticleCoreType, ArticleType, CommentRequestBodyType, CommentResponseType, CommentsWithAction, UserActionCommentType } from '../../../../types/articles.type';
+import { ArticleComentType, ArticleCoreType, ArticleType, CommentRequestBodyType, CommentsWithAction, UserActionCommentType } from '../../../../types/articles.type';
 import { map, catchError, of, filter, switchMap, startWith, distinctUntilChanged } from 'rxjs';
 import { DetectResponseUtilite } from '../../../shared/utils/detect-response-utilite';
 import { environment } from '../../../../environments/environment';
 import { CommentsService } from '../../../shared/services/comments-service';
 import { AuthService } from '../../../core/auth/auth-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-// interface CommentWithAction extends ArticleComentType {
-//   action?: string;
-// }
 
 @Component({
   selector: 'article-component',
@@ -26,7 +21,6 @@ export class ArticleComponent {
   private readonly commentsService = inject(CommentsService);
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly snackBar = inject(MatSnackBar);
 
   private totalComments: number = 0;
   private routeParams = toSignal(
@@ -52,10 +46,8 @@ export class ArticleComponent {
               console.error(data.message);
               return {} as ArticleCoreType;
             } else {
-              //this.comments.set(data.comments);
               this.totalComments = data.commentsCount;
               this.getActionUser(data.comments, data.id);
-              //this.setActionCurrentUser(data);
               return data;
             }
           }),
@@ -97,7 +89,7 @@ export class ArticleComponent {
     });
   };
 
-  protected getComments(isNew: boolean) {
+  protected getComments(isNew: boolean): void {
     if (!isNew) this.isLoad.set(true);
 
     let offset: number;
@@ -128,7 +120,7 @@ export class ArticleComponent {
 
   };
 
-  private getActionUser(data: ArticleComentType[], articleId?: string | undefined) {
+  private getActionUser(data: ArticleComentType[], articleId?: string | undefined): void {
     if (this.isLogged()) {
       this.commentsService.getActionsForArticle(
         articleId
@@ -147,8 +139,7 @@ export class ArticleComponent {
               (comment as CommentsWithAction).action = found ? found.action : '';
               return comment as CommentsWithAction;
             });
-            this.comments.set(comments);
-            console.log('comment for user: ', comments);
+            this.comments.set(comments);            
           }
         }
       );
@@ -157,13 +148,11 @@ export class ArticleComponent {
     }
   };
 
-
-
-  protected onInput(event: Event) {
+  protected onInput(event: Event): void {
     if (event.target instanceof HTMLTextAreaElement) this.textCom.set(event.target.value);
   };
 
-  protected addComment() {
+  protected addComment(): void {
     const body: CommentRequestBodyType = {
       text: this.textCom(),
       article: this.article().id
@@ -173,14 +162,13 @@ export class ArticleComponent {
     ).subscribe({
       next: data => {
         this.getComments(true);
-        this.textCom.set('');
-        console.log('ответ на отправку коммента: ', data.message);
+        this.textCom.set('');        
       },
       error: () => console.error('error to add comment')
     });
   };
 
-  protected updateAction(upd: UserActionCommentType) {
+  protected updateAction(upd: UserActionCommentType): void {
     this.comments.update(comments =>
       comments.map(comment =>
         comment.id === upd.comment
@@ -190,4 +178,38 @@ export class ArticleComponent {
     );
   };
 
+  protected shareArticle(event: Event): void {
+    const element = (event.target as HTMLElement).closest<HTMLElement>('.social');
+    if (!element) return;
+
+    const social: string = element.dataset['social'] ?? '';
+    if (!social) return;
+
+    const articleUrl = window.location.href;
+
+    switch (social) {
+      case 'vk':
+        window.open(
+          `https://vk.com/share.php?url=${encodeURIComponent(articleUrl)}`,
+          '_blank'
+        );
+        break;
+
+      case 'facebook':
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`,
+          '_blank'
+        );
+        break;
+
+      case 'instagram':
+        navigator.clipboard.writeText(articleUrl).then(() => {
+          console.log('Ссылка скопирована:', articleUrl);
+        }).catch(err => {
+          console.error('Ошибка копирования:', err);
+        });
+        window.open('https://www.instagram.com', '_blank');
+        break;
+    }
+  }
 }

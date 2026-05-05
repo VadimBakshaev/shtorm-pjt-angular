@@ -10,7 +10,7 @@ import { OrderRequestParamsType, RequestParamsType } from '../../../types/reques
   providedIn: 'root',
 })
 export class RequestService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public getCategories(): Observable<CategoryType[] | DefaultResponseType> {
     return this.http.get<CategoryType[] | DefaultResponseType>(environment.api + 'categories');

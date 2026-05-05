@@ -9,7 +9,7 @@ import { DefaultResponseType } from '../../../types/default-response.type';
   providedIn: 'root',
 })
 export class CommentsService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public getComments(offset: number, article: string): Observable<CommentResponseType | DefaultResponseType> {
     return this.http.get<CommentResponseType | DefaultResponseType>(environment.api + 'comments', { params: { offset, article } });

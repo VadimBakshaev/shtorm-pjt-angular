@@ -18,7 +18,6 @@ export class MainComponent {
   private readonly articleService = inject(ArticleService);
   private readonly dialog = inject(Dialog);
 
-
   protected serverPath: string = environment.serverStaticPath;
   protected topArticles = toSignal(this.articleService.getBestArticles().pipe(
     map(data => {

@@ -51,7 +51,7 @@ export class BannerCarouselComponent {
     },
   ]
 
-  protected openDialog(url: string) {
+  protected openDialog(url: string): void {
     this.dialog.open(ModalDialogComponent, {
       data: { type: 'order', service: url }
     })

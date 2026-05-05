@@ -28,7 +28,7 @@
         @if (requestForm.name().touched() && requestForm.name().invalid()) {
         <p class="form-error">{{requestForm.name().errors()[0].message}}</p>
         }
-        <input class="input" type="phone" placeholder="Ваш номер телефона" [formField]="requestForm.phone" [ngStyle]="{'border-color': requestForm.phone().invalid()
+        <input class="input" type="tel" placeholder="Ваш номер телефона" [formField]="requestForm.phone" [ngStyle]="{'border-color': requestForm.phone().invalid()
             && (requestForm.phone().touched() || requestForm.phone().dirty()) ? 'red' : ''}">
         @if (requestForm.phone().touched() && requestForm.phone().invalid()) {
         <p class="form-error">{{requestForm.phone().errors()[0].message}}</p>
